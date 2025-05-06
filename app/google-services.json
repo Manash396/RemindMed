@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "671943222445",
+    "project_id": "remid-6803a",
+    "storage_bucket": "remid-6803a.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:671943222445:android:ac52c07804aa07d9c95224",
+        "android_client_info": {
+          "package_name": "com.example.remid"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDRIsDThHf-TawYSzlMOUSMSgOMgmreS8o"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
