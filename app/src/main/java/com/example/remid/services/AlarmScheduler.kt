@@ -16,9 +16,8 @@ class AlarmScheduler(
     private val context : Context
 ) : Scheduler {
 
+    private val alarmManager = context.getSystemService(ALARM_SERVICE) as AlarmManager
     override fun schedule(medicine: Medicine) {
-        val alarmManager = context.getSystemService(ALARM_SERVICE) as AlarmManager
-
 
         medicine.timeTable.forEachIndexed { index, timeString ->
             val (hour, min) = timeString.split(":").map { it.toInt() }
@@ -53,6 +52,32 @@ class AlarmScheduler(
             )
 
         }
+    }
+
+    override fun unschedule(medicine: Medicine) {
+
+        medicine.timeTable.forEachIndexed { index, timeString ->
+            val (hour,min )= timeString.split(":").map { it.toInt() }
+            val requestcode = (medicine.name+hour+min).hashCode()
+
+            val intent = Intent(context, NotificationReceiver::class.java).apply {
+                putExtra("med_name", medicine.name)
+                putExtra("dose", medicine.dosage)
+                putExtra("request_code", requestcode)
+                putExtra("hour", hour)
+                putExtra("minute", min)
+            }
+
+            val pendingIntent = PendingIntent.getBroadcast(
+                context,
+                requestcode,
+                intent,
+                PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+            )
+
+             alarmManager.cancel(pendingIntent)
+        }
+
     }
 
 }

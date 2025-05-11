@@ -4,4 +4,5 @@ import com.example.remid.data.Medicine
 
 interface Scheduler {
     fun schedule(medicine: Medicine)
+    fun unschedule(medicine: Medicine)
 }

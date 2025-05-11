@@ -11,6 +11,7 @@ fun saveMedToFireStore(
     dosage: String,
     timeTable: List<String>,
     expiryDate: String,
+    medId : String,
     onSuccess: () -> Unit,
     onFailure: (Exception) -> Unit
 ){
@@ -22,7 +23,8 @@ fun saveMedToFireStore(
         "name" to name,
         "dosage" to dosage,
         "timeTable" to timeTable,
-        "expiryDate" to expiryDate
+        "expiryDate" to expiryDate,
+        "medId" to medId
     )
 
     db.collection("medicines")

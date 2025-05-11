@@ -15,7 +15,7 @@ fun getMedFromDb(
             snapshot ->
              val medicine =  snapshot.documents.mapNotNull { doc ->
                val m =  doc.toObject(Medicine::class.java)
-                   m?.copy(userId = doc.id)
+                   m?.copy(medId = doc.id)
              }
             onResult(medicine)
         }

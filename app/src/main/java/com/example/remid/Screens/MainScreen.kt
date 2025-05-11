@@ -53,18 +53,17 @@ fun MainScreen(
 ){
 
     var medicines by remember { mutableStateOf(listOf<Medicine>())  }
-    var expiredMed by remember {  mutableStateOf(listOf<Medicine>())  }
+
 
     var showDialog by remember { mutableStateOf(false) }
 
-    var showExpMed by remember { mutableStateOf(true) }
 
     val userId = Firebase.auth.currentUser?.uid
 
     var showMedicine by remember { mutableStateOf(false) }
     var showLogoutDialog by remember { mutableStateOf(false) }
 
-    var medicineId by remember { mutableStateOf("") }
+    var med by remember { mutableStateOf<Medicine?>(null) }
 
 
     val context = LocalContext.current
@@ -84,7 +83,7 @@ fun MainScreen(
 
 
     if (showMedicine) {
-          MedicineDisplayScreen(medicineId, navController) {
+          MedicineDisplayScreen(med, navController) {
               showMedicine = false
           }
           return
@@ -120,7 +119,7 @@ fun MainScreen(
                   showDialog = false
                   saveMedToFireStore(
                       userid,
-                      name, dosage, time, expDate,
+                      name, dosage, time, expDate,"",
                       onSuccess = {
                           Toast.makeText(context, "Medicine saved!", Toast.LENGTH_SHORT).show()
                       },
@@ -186,7 +185,7 @@ fun MainScreen(
                           .padding(vertical = 10.dp)
                           .padding(horizontal = 15.dp)
                           .clickable {
-                              medicineId = medicine.userId
+                              med= medicine
                               showMedicine = true
                           },
                       colors = CardDefaults.cardColors(

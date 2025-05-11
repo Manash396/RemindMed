@@ -35,29 +35,19 @@ import com.example.remid.data.Medicine
 import com.google.firebase.Firebase
 import com.google.firebase.firestore.firestore
 import com.example.remid.R
+import com.example.remid.services.AlarmScheduler
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MedicineDisplayScreen(
-    medicineId: String,
+    medicine: Medicine?,
     navController: NavController,
     onResult: () -> Unit
 ){
-    var medicine by remember { mutableStateOf<Medicine?>(null) }
+
     val context = LocalContext.current
 
-    LaunchedEffect(medicineId) {
-        Firebase.firestore
-            .collection("medicines")
-            .document(medicineId)
-            .get()
-            .addOnSuccessListener{
-                snap ->
-                  snap.toObject(Medicine::class.java)?.let {
-                      medicine = it.copy(userId = snap.id)
-                  }
-            }
-    }
+
 
     Scaffold(
          topBar = {  TopAppBar(
@@ -135,8 +125,10 @@ fun MedicineDisplayScreen(
 
                    Button(
                        onClick = {
+                           val scheduler = AlarmScheduler(context)
+                           scheduler.unschedule(medicine)
                            Firebase.firestore.collection("medicines")
-                               .document(medicineId)
+                               .document(medicine.medId)
                                .delete()
                                .addOnSuccessListener{
                                    navController.navigate("spin")

@@ -30,8 +30,8 @@ import com.google.firebase.Firebase
 import com.google.firebase.auth.auth
 
 class MainActivity : ComponentActivity() {
-   private var scheduler = AlarmScheduler(this)
     private lateinit var alarmManager : AlarmManager
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         alarmManager = getSystemService(ALARM_SERVICE) as AlarmManager
@@ -43,17 +43,7 @@ class MainActivity : ComponentActivity() {
                     contract = ActivityResultContracts.RequestPermission()
                 ) { isGranted ->
                     if (isGranted) {
-                        var user = Firebase.auth.currentUser
-                        if (user != null) {
-                            getMedFromDb(
-                                user.uid.toString()
-                            ) { docs ->
-                                docs.forEach { m ->
-                                    scheduler.schedule(m)
-                                }
-                            }
 
-                        }
                     } else {
                         // Permission denied
                     }
@@ -67,18 +57,6 @@ class MainActivity : ComponentActivity() {
                             android.Manifest.permission.POST_NOTIFICATIONS
                         ) != PackageManager.PERMISSION_GRANTED ){
                         permissionLauncher.launch(android.Manifest.permission.POST_NOTIFICATIONS)
-                    }else{
-                        var user = Firebase.auth.currentUser
-                        if (user != null) {
-                            getMedFromDb(
-                                user.uid.toString()
-                            ) { docs ->
-                                docs.forEach { m ->
-                                    scheduler.schedule(m)
-                                }
-                            }
-
-                        }
                     }
 
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S ){
